@@ -16,10 +16,54 @@ struct node* newNode(struct node* ptr, int val){
         return ptr;
     }
     if (ptr->data>val){
-        newNode(ptr->lchild,val);
+        if (ptr->lchild == NULL){
+            ptr->lchild = (struct node*)malloc(sizeof(struct node));
+            ptr = ptr->lchild;
+            ptr->lchild = NULL;
+            ptr->rchild = NULL;
+            ptr->data = val;
+        }
+        else newNode(ptr->lchild,val);
     }
-    else if (ptr->data<val) 
-        newNode(ptr->rchild,val);
+    else 
+    if (ptr->rchild == NULL){
+            ptr->rchild = (struct node*)malloc(sizeof(struct node));
+            ptr = ptr->rchild;
+            ptr->lchild = NULL;
+            ptr->rchild = NULL;
+            ptr->data = val;
+        }
+    else newNode(ptr->rchild,val);
+}
+
+void preorder(struct node* ptr){
+    if (ptr==NULL)
+        return;
+    else{
+        printf("%d ",ptr->data);
+        preorder(ptr->lchild);
+        preorder(ptr->rchild);        
+    }
+}
+
+void postorder(struct node* ptr){
+    if (ptr==NULL)
+        return;
+    else{
+        postorder(ptr->lchild);
+        postorder(ptr->rchild);
+        printf("%d ",ptr->data);        
+    }
+}
+
+void inorder(struct node* ptr){
+    if (ptr==NULL)
+        return;
+    else{
+        inorder(ptr->lchild);
+        printf("%d ",ptr->data);     
+        inorder(ptr->rchild);           
+    }
 }
 
 int main(){
@@ -32,4 +76,16 @@ int main(){
     newNode(root,24);
     newNode(root,51);
     newNode(root,23);
+    
+    printf("Preorder: ");
+    preorder(root);
+    printf("\n");
+    
+    printf("Postorder: ");
+    postorder(root);
+    printf("\n");
+    
+    printf("Inorder: ");
+    inorder(root);
+    printf("\n");
 }
