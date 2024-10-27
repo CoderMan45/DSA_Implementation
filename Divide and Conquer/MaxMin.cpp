@@ -1,32 +1,39 @@
-#include <iostream>
+#include<iostream>
+#include<vector>
+#include<utility>
+#include<climits>
 
 using namespace std;
 
-int MaxMin(int A[], int i, int j)
-{
-    if (i == j)
-    {
-        return A[i];
+pair<int,int> MaxMin(vector<int> arr, int l,int h){
+    pair<int,int> maxmin(INT_MIN,INT_MAX);
+    if (l==h){
+        maxmin.first = arr[l];
+        maxmin.second = arr[l];
+        return maxmin;
     }
-    else
-    {
-        int mid = (i + j) / 2;
-        int min1 = MaxMin(A, i, mid);
-        int min2 = MaxMin(A, mid + 1, j);
-        if (min1 > min2)
-        {
-            return min2;
-        }
-        else
-            return min1;
+    else{
+        int mid = (l+h)/2;
+        pair<int,int> maxmin1(INT_MIN,INT_MAX),maxmin2(INT_MIN,INT_MAX);
+        maxmin1 = MaxMin(arr, l, mid);
+        maxmin2 = MaxMin(arr, mid+1, h);
+        if(maxmin1.first> maxmin2.first)
+            maxmin.first = maxmin1.first;
+        else    
+            maxmin.first = maxmin2.first;
+        if(maxmin1.second < maxmin2.second)
+            maxmin.second = maxmin1.second;
+        else    
+            maxmin.second = maxmin2.second;
+        return maxmin;
     }
 }
 
-int main()
-{
-    int A[] = {70, 20, 40, 35, 55, 68, 42, 37, 120, 49, 18, 60};
-    int i = 0, j = (sizeof(A) / sizeof(A[0])) - 1;
-    int min = MaxMin(A, i, j);
-    cout << min;
-    return 0;
+int main(){
+    vector<int> arr = {9, 14 ,11 ,25 ,13, 7, 85, 10, 22, 17, 50};
+    pair<int,int> maxmin(INT_MIN,INT_MAX) ;
+    maxmin = MaxMin(arr, 0, arr.size()-1);
+    cout<<"The maximum element is : "<<maxmin.first<<endl;
+    cout<<"The minimum element is : "<<maxmin.second<<endl;
+
 }
